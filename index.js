@@ -60,7 +60,19 @@ app.post("/user/logout", (req, res) => {
     fs.readFile("./db.json", { encoding: "utf-8" }, (err, data) => {
         const parsed = JSON.parse(data);
         var arr = parsed.users;
-        var ar = arr.map((elm) => elm.token === query.apiKey ? elm = delete elm.token : elm);
+        var ar = arr.map((elm) => {
+            if (elm.token === query.apiKey) {
+                obj = {};
+                for (var x in elm) {
+                    if (x !== "token") {
+                        obj[x]=elm[x]
+                    }
+                }
+                return obj
+            } else {
+               return elm 
+            }  
+        });
         parsed.users = ar;
         fs.writeFile("./db.json", JSON.stringify(parsed), { encoding: "utf-8" }, () => {
             res.send({ status: "user logged out successfully" })
