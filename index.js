@@ -64,12 +64,14 @@ app.post("/user/logout", (req, res) => {
             if (elm.token === query.apiKey) {
                 obj = {};
                 for (var x in elm) {
-                    if (x !== "token") {
+                    if (x != "token") {
                         obj[x]=elm[x]
                     }
                 }
+                
                 return obj
             } else {
+                console.log("matched")
                return elm 
             }  
         });
@@ -99,7 +101,16 @@ app.get("/db", (req, res) => {
             res.send("override")
         })
       })
-})
+  })
+
+app.get("/votes/party/:party", (req, res) => {
+    var  {party}=req.params
+    fs.readFile("./db.json", { encoding: "utf-8" }, (err,data) => {
+        var parsed = JSON.parse(data);
+        var arr=parsed.users.filter((elm)=>elm.party==party)
+          return res.send(arr)
+      })
+  })
 
 
 app.get("/", (req, res) => {
