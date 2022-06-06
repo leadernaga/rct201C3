@@ -110,7 +110,16 @@ app.get("/votes/party/:party", (req, res) => {
         var arr=parsed.users.filter((elm)=>elm.party==party)
           return res.send(arr)
       })
-  })
+})
+  
+app.get("/votes/voters", (req, res) => {
+    fs.readFile("./db.json", { encoding: "utf-8" }, (err,data) => {
+        var parsed = JSON.parse(data);
+        var arr=parsed.users.filter((elm)=>elm.role==="voter")
+          return res.send(arr)
+      })
+    
+})
 
 
 app.get("/", (req, res) => {
